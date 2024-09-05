@@ -1,0 +1,105 @@
+[gd_scene load_steps=6 format=3 uid="uid://2kkvx37liqbv"]
+
+[ext_resource type="Script" path="res://Objects/Car/vhehicle.gd" id="1_vomsk"]
+[ext_resource type="PackedScene" uid="uid://cva8yispijq5f" path="res://Objects/PixelSnappingCamera3D/pixel_snapping_camera_3d.tscn" id="2_f32ii"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_320t6"]
+points = PackedVector3Array(0.5, 0.25, 1.5, 0.5, -0.25, 1.5, 0.5, 0.25, -1.5, -0.5, 0.25, 1.5, -0.5, -0.25, 1.5, 0.5, -0.25, -1.5, -0.5, 0.25, -1.5, -0.5, -0.25, -1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xv4w3"]
+albedo_color = Color(0.200154, 0.148732, 0.173359, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3bm1h"]
+material = SubResource("StandardMaterial3D_xv4w3")
+height = 0.4
+radial_segments = 12
+
+[node name="Car" type="VehicleBody3D"]
+collision_layer = 2
+mass = 400.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, -0.3, 0)
+script = ExtResource("1_vomsk")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_320t6")
+
+[node name="WheelFL" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.5, 2.5)
+use_as_traction = true
+use_as_steering = true
+wheel_roll_influence = 0.5
+wheel_radius = 0.6
+wheel_rest_length = 1.0
+suspension_travel = 1.0
+suspension_stiffness = 20.0
+suspension_max_force = 10000.0
+damping_compression = 0.3
+damping_relaxation = 0.5
+
+[node name="Tire" type="MeshInstance3D" parent="WheelFL"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.4, 0, 0)
+mesh = SubResource("CylinderMesh_3bm1h")
+
+[node name="WheelFR" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.5, 2.5)
+use_as_traction = true
+use_as_steering = true
+wheel_roll_influence = 0.5
+wheel_radius = 0.6
+wheel_rest_length = 1.0
+suspension_travel = 1.0
+suspension_stiffness = 20.0
+suspension_max_force = 10000.0
+damping_compression = 1.0
+damping_relaxation = 0.5
+
+[node name="Tire" type="MeshInstance3D" parent="WheelFR"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.4, 0, 0)
+mesh = SubResource("CylinderMesh_3bm1h")
+
+[node name="WheelBL" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -0.25, -1.5)
+use_as_traction = true
+wheel_roll_influence = 0.5
+wheel_radius = 0.6
+wheel_rest_length = 0.5
+suspension_travel = 0.5
+suspension_stiffness = 20.0
+suspension_max_force = 10000.0
+damping_compression = 0.3
+damping_relaxation = 0.5
+
+[node name="Tire" type="MeshInstance3D" parent="WheelBL"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_3bm1h")
+
+[node name="WheelBR" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, -0.25, -1.5)
+use_as_traction = true
+wheel_roll_influence = 0.5
+wheel_radius = 0.6
+wheel_rest_length = 0.5
+suspension_travel = 0.5
+suspension_stiffness = 20.0
+suspension_max_force = 10000.0
+damping_compression = 0.3
+damping_relaxation = 0.5
+
+[node name="Tire" type="MeshInstance3D" parent="WheelBR"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_3bm1h")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+top_level = true
+
+[node name="CameraArm" type="Node3D" parent="CameraPivot"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
+
+[node name="PixelSnappingCamera3D" parent="CameraPivot/CameraArm" instance=ExtResource("2_f32ii")]
+transform = Transform3D(-1, 4.37114e-08, -7.57103e-08, 0, 0.866025, 0.5, 8.74228e-08, 0.5, -0.866025, 0, 35.35, -50)
+
+[node name="CameraDolly" type="RemoteTransform3D" parent="."]
+remote_path = NodePath("../CameraPivot")
+update_rotation = false
+update_scale = false

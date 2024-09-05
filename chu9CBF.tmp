@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://urq1mjdypjju"]
+
+[ext_resource type="Script" path="res://chunk_testing.gd" id="1_4ngfl"]
+
+[node name="Chunk_Testing" type="Node3D"]
+script = ExtResource("1_4ngfl")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cva8yispijq5f"]
+
+[ext_resource type="Script" path="res://Objects/PixelSnappingCamera3D/pixel_snapping_camera_3d.gd" id="1_iujm5"]
+
+[node name="PixelSnappingCamera3D" type="Node3D"]
+script = ExtResource("1_iujm5")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+projection = 1
+size = 30.0
+far = 500.0
