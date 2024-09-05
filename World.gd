@@ -2,7 +2,7 @@ extends Node3D
 
 var chunk_size = Vector3i(16, 16, 16)
 
-var area_size = Vector3i(8, 2, 8)
+var area_size = Vector3i(10, 2, 10)
 var area_row    = area_size.x
 var area_slice  = area_size.x * area_size.y
 var area_volume = area_size.x * area_size.y * area_size.z
@@ -27,11 +27,6 @@ func _process(_delta):
 	update_chunks()
 	clean_up_chunks()
 	reset_chunks()
-
-	# Debug stuff
-	DebugDraw2D.set_text("FPS", Engine.get_frames_per_second())
-	#DebugDraw2D.create_fps_graph("GRAPH")
-	#DebugDraw3D.draw_gizmo(Transform3D.IDENTITY)
 
 func add_chunk(chunk_position: Vector3i):
 	var key = (str(chunk_position.x) 

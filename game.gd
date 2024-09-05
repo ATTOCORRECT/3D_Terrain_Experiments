@@ -2,6 +2,12 @@ extends Node3D
 
 func _ready():
 	setup_viewport()
+	DebugDraw2D.create_fps_graph("GRAPH")
+
+func _process(_delta):
+	# Debug stuff
+	DebugDraw2D.set_text("FPS", Engine.get_frames_per_second())
+	#DebugDraw3D.draw_gizmo(Transform3D.IDENTITY)
 
 func setup_viewport():
 	# assign variables
