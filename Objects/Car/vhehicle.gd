@@ -1,8 +1,8 @@
 extends VehicleBody3D
 
-const MAX_RPM = 500
+var MAX_RPM = 500
 const MAX_TORQUE = 2000
-
+var rpm
 
 func _physics_process(delta):
 	

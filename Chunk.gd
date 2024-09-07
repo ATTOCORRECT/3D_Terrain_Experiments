@@ -292,10 +292,10 @@ var cube_positions = {}
 
 const SURFACE_LEVEL = 0
 
-func _init(noise, chunk_position, chunk_size):
-	self.noise = noise
-	self.chunk_position = chunk_position
-	self.chunk_size = chunk_size
+func _init(in_noise, in_chunk_position, in_chunk_size):
+	noise = in_noise
+	chunk_position = in_chunk_position
+	chunk_size = in_chunk_size
 	grid_size = chunk_size + Vector3i.ONE
 
 func _ready():
@@ -387,6 +387,10 @@ func generate_chunk():
 		
 		append_triangles(triangle_vertices)
 
+	# Return if there isnt any mesh to build
+	if mesh_verts.size() == 0:
+		return
+
 	# Assign arrays to surface array
 	surface_array[Mesh.ARRAY_VERTEX] = mesh_verts
 	surface_array[Mesh.ARRAY_NORMAL] = mesh_normals
@@ -406,7 +410,7 @@ func generate_chunk():
 	#var collision : StaticBody3D = get_child(0)
 	#collision.set_collision_mask_value(2,true)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	
 	# chunk border
 	DebugDraw3D.draw_box(position, Quaternion.IDENTITY, chunk_size, Color.WHITE)
@@ -450,10 +454,13 @@ func append_vertex(u: Vector3, n: Vector3):
 	mesh_indexes.append(mesh_verts.size() - 1)
 	mesh_normals.append(n)
 
-func get_density(position: Vector3):
-	var noise = noise.get_noise_3d(position.x, position.y, position.z)
-	var temp = -((position.y) ** 2.0 / 2.0 ** 11.0) + 1/((position.y) + 0.01) + (int(position.y) % 4)/128.0 - 0.2
-	var t = clamp(Vector2(position.x, position.z).length() / 32.0, 0, 1)
-	var d = -sign(position.y - 4)
+func get_density(global_cell_position: Vector3):
+	var x = global_cell_position.x
+	var y = global_cell_position.y
+	var z = global_cell_position.z
+	
+	var noise = noise.get_noise_3d(x, y, z)
+	var temp = -((y) ** 2.0 / 2.0 ** 11.0) + 1/((y) + 0.01) + (int(y) % 4)/128.0 - 0.2
+	var t = clamp(Vector2(x, z).length() / 32.0, 0, 1)
+	var d = -sign(y - 4)
 	return lerpf(d, noise + temp, t)
-	pass
